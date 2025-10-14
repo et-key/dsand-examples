@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>五目並べ（dsand版）</title>
+    <link rel="stylesheet" href="gomoku.css">
+    <!-- dsandとwhite_catsの読み込み -->
+    <script src="https://cdn.jsdelivr.net/npm/white_cats@0.1.54/cat.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dsand@0.8.60/dsand.js"></script>
+</head>
+
+<body>
+    <div id="app"></div>
+
+    <script>
+        // ========== 定数 ==========
+        const BOARD_SIZE = 15;
+        const PLAYER_NAMES = { black: '黒', white: '白' };
+
+        // ========== ゲームの状態 ==========
+        _($.data).put({
+            board: Array(BOARD_SIZE).fill().map(() => Array(BOARD_SIZE).fill(null)),
+            currentPlayer: 'black',
+            gameOver: false,
+            winner: null
+        });
+
+        // ========== 情報表示を作成 ==========
+        function createInfoArea() {
+            const { currentPlayer, gameOver, winner } = $.data;
+
+            const text = gameOver
+                ? `${PLAYER_NAMES[winner]}の勝ち！`
+                : `現在: ${PLAYER_NAMES[currentPlayer]}の番`;
+
+            return div.class('info').$(text);
+        }
+
+        // ========== ボードの1行を作る ==========
+        function createBoardRow(rowIndex) {
+            const cells = [];
+
+            for (let col = 0; col < BOARD_SIZE; col++) {
+                const stone = $.data.board[rowIndex][col];
+
+                const cell = div
+                    .class('cell gameCell')
+                    .put({ row: rowIndex, col: col })
+                    .on('click')
+                    .$(
+                        stone ? div.class(`stone ${stone}`) : ''
+                    );
+
+                cells.push(cell);
+            }
+
+            return div.class('row').$(...cells);
+        }
+
+        // ========== ボード全体を作る ==========
+        function createBoard() {
+            const rows = [];
+
+            for (let row = 0; row < BOARD_SIZE; row++) {
+                rows.push(createBoardRow(row));
+            }
+
+            return div.class('board').$(...rows);
+        }
+
+        // ========== イベント処理 ==========
+        // セルクリック処理
+        _($.role).put({
+            gameCell(e) {
+                if ($.data.gameOver) return;
+
+                const row = parseInt($(e).get('row'));
+                const col = parseInt($(e).get('col'));
+
+                if ($.data.board[row][col]) return;
+
+                // 石を置く
+                $.data.board[row][col] = $.data.currentPlayer;
+
+                // 勝敗判定
+                if (checkWin(row, col)) {
+                    $.data.gameOver = true;
+                    $.data.winner = $.data.currentPlayer;
+                } else {
+                    // プレイヤー交代
+                    $.data.currentPlayer = $.data.currentPlayer === 'black' ? 'white' : 'black';
+                }
+
+                renderBoard();
+            },
+
+            // ゲームリセット
+            resetBtn(e) {
+                _($.data).put({
+                    board: Array(BOARD_SIZE).fill().map(() => Array(BOARD_SIZE).fill(null)),
+                    currentPlayer: 'black',
+                    gameOver: false,
+                    winner: null
+                });
+                renderBoard();
+            }
+        });
+
+        // ========== 勝敗判定 ==========
+        function checkWin(row, col) {
+            const player = $.data.board[row][col];
+            const directions = [
+                [[0, 1], [0, -1]],   // 横
+                [[1, 0], [-1, 0]],   // 縦
+                [[1, 1], [-1, -1]],  // 斜め \
+                [[1, -1], [-1, 1]]   // 斜め /
+            ];
+
+            for (let [dir1, dir2] of directions) {
+                let count = 1;
+
+                // 一方向
+                count += countStones(row, col, dir1[0], dir1[1], player);
+                // 逆方向
+                count += countStones(row, col, dir2[0], dir2[1], player);
+
+                if (count >= 5) return true;
+            }
+
+            return false;
+        }
+
+        // ========== 指定方向の石を数える ==========
+        function countStones(row, col, dRow, dCol, player) {
+            let count = 0;
+            let r = row + dRow;
+            let c = col + dCol;
+
+            while (r >= 0 && r < BOARD_SIZE && c >= 0 && c < BOARD_SIZE && $.data.board[r][c] === player) {
+                count++;
+                r += dRow;
+                c += dCol;
+            }
+
+            return count;
+        }
+
+        // ========== 再描画関数 ==========
+        function renderBoard() {
+            $body.$(
+                div.id('app').$(
+                    createInfoArea(),
+                    createBoard(),
+                    button.class('reset resetBtn').on('click').$('リセット')
+                )
+            );
+        }
+
+        // ========== 初期化 ==========
+        renderBoard();
+    </script>
+</body>
+
+</html>

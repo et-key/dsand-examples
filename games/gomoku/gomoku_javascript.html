@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>五目並べ（javascript版）</title>
+    <link rel="stylesheet" href="gomoku.css">
+</head>
+
+<body>
+    <div id="app"></div>
+
+    <script>
+        // ========== 定数 ==========
+        const BOARD_SIZE = 15;
+        const PLAYER_NAMES = { black: '黒', white: '白' };
+
+        // ========== ゲームの状態 ==========
+        const gameState = {
+            board: Array(BOARD_SIZE).fill().map(() => Array(BOARD_SIZE).fill(null)),
+            currentPlayer: 'black',
+            gameOver: false,
+            winner: null
+        };
+
+        // ========== ボードを描画 ==========
+        function renderBoard() {
+            const app = document.getElementById('app');
+            app.innerHTML = '';
+
+            // 情報表示
+            const info = document.createElement('div');
+            info.className = 'info';
+            if (gameState.gameOver) {
+                info.textContent = `${PLAYER_NAMES[gameState.winner]}の勝ち！`;
+            } else {
+                info.textContent = `現在: ${PLAYER_NAMES[gameState.currentPlayer]}の番`;
+            }
+            app.appendChild(info);
+
+            // ボード
+            const boardDiv = document.createElement('div');
+            boardDiv.className = 'board';
+
+            for (let row = 0; row < BOARD_SIZE; row++) {
+                const rowDiv = document.createElement('div');
+                rowDiv.className = 'row';
+
+                for (let col = 0; col < BOARD_SIZE; col++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'cell';
+                    cell.dataset.row = row;
+                    cell.dataset.col = col;
+
+                    if (gameState.board[row][col]) {
+                        const stone = document.createElement('div');
+                        stone.className = `stone ${gameState.board[row][col]}`;
+                        cell.appendChild(stone);
+                    }
+
+                    cell.addEventListener('click', handleClick);
+                    rowDiv.appendChild(cell);
+                }
+
+                boardDiv.appendChild(rowDiv);
+            }
+
+            app.appendChild(boardDiv);
+
+            // リセットボタン
+            const resetBtn = document.createElement('button');
+            resetBtn.className = 'reset';
+            resetBtn.textContent = 'リセット';
+            resetBtn.addEventListener('click', resetGame);
+            app.appendChild(resetBtn);
+        }
+
+        // ========== セルクリック処理 ==========
+        function handleClick(e) {
+            if (gameState.gameOver) return;
+
+            const cell = e.currentTarget;
+            const row = parseInt(cell.dataset.row);
+            const col = parseInt(cell.dataset.col);
+
+            if (gameState.board[row][col]) return;
+
+            // 石を置く
+            gameState.board[row][col] = gameState.currentPlayer;
+
+            // 勝敗判定
+            if (checkWin(row, col)) {
+                gameState.gameOver = true;
+                gameState.winner = gameState.currentPlayer;
+            } else {
+                // プレイヤー交代
+                gameState.currentPlayer = gameState.currentPlayer === 'black' ? 'white' : 'black';
+            }
+
+            renderBoard();
+        }
+
+        // ========== 勝敗判定 ==========
+        function checkWin(row, col) {
+            const player = gameState.board[row][col];
+            const directions = [
+                [[0, 1], [0, -1]],   // 横
+                [[1, 0], [-1, 0]],   // 縦
+                [[1, 1], [-1, -1]],  // 斜め \
+                [[1, -1], [-1, 1]]   // 斜め /
+            ];
+
+            for (let [dir1, dir2] of directions) {
+                let count = 1;
+
+                // 一方向
+                count += countStones(row, col, dir1[0], dir1[1], player);
+                // 逆方向
+                count += countStones(row, col, dir2[0], dir2[1], player);
+
+                if (count >= 5) return true;
+            }
+
+            return false;
+        }
+
+        // ========== 指定方向の石を数える ==========
+        function countStones(row, col, dRow, dCol, player) {
+            let count = 0;
+            let r = row + dRow;
+            let c = col + dCol;
+
+            while (r >= 0 && r < BOARD_SIZE && c >= 0 && c < BOARD_SIZE && gameState.board[r][c] === player) {
+                count++;
+                r += dRow;
+                c += dCol;
+            }
+
+            return count;
+        }
+
+        // ========== ゲームリセット ==========
+        function resetGame() {
+            gameState.board = Array(BOARD_SIZE).fill().map(() => Array(BOARD_SIZE).fill(null));
+            gameState.currentPlayer = 'black';
+            gameState.gameOver = false;
+            gameState.winner = null;
+            renderBoard();
+        }
+
+        // ========== 初期化 ==========
+        renderBoard();
+    </script>
+</body>
+
+</html>

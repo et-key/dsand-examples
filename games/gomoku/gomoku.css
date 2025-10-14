@@ -1,0 +1,63 @@
+/* gomoku.css */
+
+.board {
+  display: inline-block;
+  background: #daa520;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.row {
+  display: flex;
+}
+
+.cell {
+  width: 30px;
+  height: 30px;
+  border: 1px solid #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background: #f4a460;
+}
+
+.cell:hover {
+  background: #e09450;
+}
+
+.stone {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+}
+
+.black {
+  background: #000;
+}
+
+.white {
+  background: #fff;
+  border: 1px solid #000;
+}
+
+.info {
+  margin: 20px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.reset {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  margin: 20px;
+  background: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
+
+.reset:hover {
+  background: #45a049;
+}
