@@ -1,23 +1,25 @@
 # dsand-examples
 
-dsandフレームワークの学習用サンプルコード集
-
-## これは何？
-
-[dsand](https://github.com/johnny-shaman/dsand) を使ったサンプル集です。
-各サンプルには通常のJavaScript版とdsand版があり、比較して学べます。
+- [dsand](https://github.com/johnny-shaman/dsand) を使ったサンプル集です。
+各サンプルには通常のJavaScript版とdsand版があります。
+- 実装にはAIを使用しています。
 
 ## 使い方
 
-1. HTMLファイルをダウンロード
-2. ブラウザで開く
+1. 各フォルダをダウンロード
+2. HTMLをブラウザで開く
 
 ## サンプル一覧
 
+以下、各ファイル名の命名規則
+- `*_javascript.*`  - 通常版(JavaScriptのみ)
+- `*_dsand.*html*`  - dsand版(dsand及びwhite_catsを使用)
+
 ### 五目並べ
 📁 `games/gomoku` フォルダ
-- `gomoku_javascript.html` - 通常版(JavaScriptのみ)
-- `gomoku_dsand.html` - dsand版(dsand及びwhite_catsを使用)
+
+### テトリス
+📁 `games/tetoris` フォルダ
 
 ## 関連リンク
 

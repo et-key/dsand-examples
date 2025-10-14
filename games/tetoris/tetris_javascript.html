@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>テトリス - JavaScript版</title>
+  <link rel="stylesheet" href="tetris.css">
+</head>
+<body>
+  <div class="game-container">
+    <div class="game-info">
+      <h1>テトリス</h1>
+      <div class="score-panel">
+        <div class="score-item">
+          <span class="label">スコア:</span>
+          <span id="score">0</span>
+        </div>
+        <div class="score-item">
+          <span class="label">ライン:</span>
+          <span id="lines">0</span>
+        </div>
+        <div class="score-item">
+          <span class="label">レベル:</span>
+          <span id="level">1</span>
+        </div>
+      </div>
+      <div class="next-piece">
+        <h3>Next</h3>
+        <canvas id="nextCanvas" width="120" height="120"></canvas>
+      </div>
+      <div class="controls">
+        <h3>操作方法</h3>
+        <p>← → : 移動</p>
+        <p>↓ : 高速落下</p>
+        <p>↑ / Space : 回転</p>
+        <p>P : 一時停止</p>
+      </div>
+      <button id="startBtn">スタート</button>
+      <button id="pauseBtn" disabled>一時停止</button>
+    </div>
+    <div class="game-board">
+      <canvas id="gameCanvas" width="300" height="600"></canvas>
+      <div id="gameOver" class="game-over hidden">
+        <h2>ゲームオーバー</h2>
+        <p>スコア: <span id="finalScore">0</span></p>
+        <button id="restartBtn">もう一度</button>
+      </div>
+    </div>
+  </div>
+  <script src="tetris_javascript.js"></script>
+</body>
+</html>
