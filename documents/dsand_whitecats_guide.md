@@ -1,5 +1,5 @@
 # white_cats & dsand 設計思想ガイド
-## Johnny氏から学んだ本質的な知識
+## Shinichi氏から学んだ本質的な知識
 
 ---
 
@@ -102,7 +102,7 @@ $(div).class('foo').$
 **ボードゲーム設計の実体験から生まれた**
 
 > 「自分のボードゲームの設計があって、それをオブジェクト指向で実装しようとしたら破綻したのがきっかけでもあったんです。」
-> — Johnny
+> — Shinichi
 
 #### OOPでの破綻
 ```javascript
@@ -404,7 +404,7 @@ $(document.querySelector('table'))  // TABLE用メソッド
 ### TypeScriptとの違い
 
 > 「別に型が素直なら、静的な型付けでパズルゲームする意味ってありますかね？」
-> — Johnny
+> — Shinichi
 
 ```javascript
 // JavaScriptは元々型がある
@@ -487,7 +487,7 @@ _($.pack).put({
 ```
 
 > 「reactが嫌いだからdsandを書いたんです。」
-> — Johnny
+> — Shinichi
 
 ---
 
@@ -706,7 +706,7 @@ _($.pack).put({
 > 
 > 「さようなら、型。こんにちは、dsand」
 > 
-> — Johnny
+> — Shinichi
 
 ---
 
@@ -719,4 +719,4 @@ _($.pack).put({
 
 ---
 
-*このドキュメントは、作者Johnny氏との直接の対話から得られた知見をまとめたものです。*
+*このドキュメントは、作者Shinichi氏との直接の対話から得られた知見をまとめたものです。*
